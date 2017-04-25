@@ -1,0 +1,89 @@
+<meta charset="utf-8">
+<head>
+  <title><%= title %></title>
+
+  <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+  <link href="/css/public.css" rel="stylesheet">
+  <script src="/js/lib/jquery-1.9.1.min.js"> </script>
+  <script src="/bootstrap/js/bootstrap.min.js"></script>
+  <script src="/js/lib/d3.v3.min.js"></script>
+  <script src="/js/lib/d3.tip.v0.6.3.js"></script>
+</head>
+
+<body style="background-image: url(/images/wood.jpg);background-size:cover">
+
+  <nav class="navbar  navbar-inverse">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="/">首页</a>
+    </div>
+    <div class="nav navbar-nav">   
+      <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">用户 <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="/users/hot">热门用户</a></li>
+            <li><a href="/users/company">公司分布</a></li>
+            <li><a href="/users/location">地域分布</a></li>
+            <li><a href="/users/time">时间分布</a></li>
+            <li><a href="/users/follower">用户关系</a></li>
+          </ul>
+      </li>
+      <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">项目 <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="/repo/popular_repo">热门项目</a></li>
+            <li><a href="/repo/popular_language">热门语言</a></li>
+            <li><a href="/repo/popular_frame">热门框架</a></li>
+            <li><a href="/repo/repo_Word">项目高频词</a></li>
+            <li><a href="/repo/repo_Contributor">开源贡献者</a></li>
+          </ul>
+      </li>
+      <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">组织 <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="/repo/popular_org">热门组织</a></li>
+            <li><a href="/repo/repo_month">组织VS个人用户</a></li>
+          </ul>
+      </li>
+    </div>
+    <ul class="nav navbar-nav navbar-right">
+      <li><a href="#">联系我们</a></li>
+    </ul>
+  </nav>
+  
+<div class="container">
+   <div class="row">
+
+     <div class="col-md-2">
+      <ul class="nav nav-pills nav-stacked" id="frameType" class="secondNavi">
+          <li class="active"><a href="#"><span class="fa fa-window-maximize"></span>Ui框架</a></li>
+          <li><a href="#"><span class="fa fa-android"></span>Android框架</a></li>
+          <li><a href="#"><span class="fa fa-chrome"></span>Web框架</a></li>
+      </ul>
+
+      </div> 
+
+      <div class="col-md-6 header">
+          <div class="row">
+            <div class="col-md-11 ">最热门的框架</div>
+            <div class="col-md-1">
+              <span class="fa fa-question" title="热门框架说明"  
+              data-container="body" data-toggle="popover" data-placement="right" data-content="首先，我们选择了三类框架中的热门框架，在筛选出的1400多个热门项目中，查找项目说明
+              中含有热门框架字眼的项目，默认该项目中会使用该框架，统计使用热门框架的项目总数，
+              得到最终的热门框架。" id="readme"> </span>
+            </div>
+          </div>
+        <div class="row" id="frameMain"></div>
+      </div>
+
+      <div class="col-md-4" >
+        <div class="secondHeader" style="text-align:center;" id="reposHead"> <p>使用该框架的热门项目:</p></div>
+        <div id="repoInfo" style="height:200;text-align:center;"></div>
+        <div class="secondHeader" id="pieHead"><p>框架的项目语言分布</p></div>
+        <div id="frameLanguages"></div>
+      </div>
+   </div>
+</body>
+<script src="/js/showJs/frameShow.js"></script>
+<script src="/js/drawChart/drawPie.js"></script>
+

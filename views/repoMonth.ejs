@@ -1,0 +1,104 @@
+<meta charset="utf-8">
+<head>
+  <title><%= title %></title>
+  <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+  <script src="/js/lib/jquery-1.9.1.min.js"> </script>
+  <script src="/bootstrap/js/bootstrap.min.js"></script>
+  <script src="/js/lib/d3.min.js"></script>
+  <script src="/js/lib/dimple.v2.3.0.min.js"></script>
+  <script src="/js/lib/d3pie.min.js"></script>
+<style type="text/css">
+.header{
+    color: #FFFFFF;
+    text-align:center;
+    font-size: 20px;
+    padding-top:30px;
+}
+.repoMain{
+  background:#F0F0F0;
+}
+.rowMain{
+  padding-top:10px;
+  text-align:center  ;
+}
+.readme{
+  color: #FFFFFF;
+  text-align:left;
+  font-size: 12px;
+}
+</style>
+</head>
+
+<body style="background-image: url(/images/wood.jpg);background-size:cover">
+<nav class="navbar  navbar-inverse">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="/">首页</a>
+    </div>
+    <div class="nav navbar-nav">   
+      <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">用户 <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="/users/hot">热门用户</a></li>
+            <li><a href="/users/company">公司分布</a></li>
+            <li><a href="/users/location">地域分布</a></li>
+            <li><a href="/users/time">时间分布</a></li>
+            <li><a href="/users/follower">用户关系</a></li>
+          </ul>
+      </li>
+      <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">项目 <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="/repo/popular_repo">热门项目</a></li>
+            <li><a href="/repo/popular_language">热门语言</a></li>
+            <li><a href="/repo/popular_frame">热门框架</a></li>
+            <li><a href="/repo/repo_Word">项目高频词</a></li>
+            <li><a href="/repo/repo_Contributor">开源贡献者</a></li>
+          </ul>
+      </li>
+      <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">组织 <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="/repo/popular_org">热门组织</a></li>
+            <li><a href="/repo/repo_month">组织VS个人用户</a></li>
+          </ul>
+      </li>
+    </div>
+    <ul class="nav navbar-nav navbar-right">
+      <li><a href="#">联系我们</a></li>
+    </ul>
+  </nav>
+<div class="container">
+   <div class="row" background="#90C"> 
+      <div class="col-md-8">
+        <div class="row header" background="#90C"> 
+          <div class="col-md-10">
+             <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2016年各月份个人用户VS组织用户</p>
+          </div>
+          <div class="col-md-2">            
+            <span class="fa fa-question" title="个人用户VS组织说明"  
+                  data-container="body" data-toggle="popover" data-placement="right" data-content="图中各月份的项目总数并不是真实总数，而是经过stars大于30和forks大于30筛选出的项目数目。组织用户是指:一个开发小团体，一般由几个人组成，人数不多。"
+                  id="readme"> 
+            </span>
+          </div>
+       </div>
+      </div>
+   </div>
+
+
+   <div class="row rowMain">
+      <div class="col-md-8 repoMain"  id="chinaUserMain"><p>2016年GitHub中国个人用户与组织用用户热门项目变化图</p></div>
+      <div class="col-md-4 readme"  id="orgInfo">
+      <div id="chinaPie" style="height: 300px"></div>
+      右图所示为中国热门项目的创建者中个人用户和组织用户的对比，12个月份以来个人用户相比组织占据绝对优势，占用户总数的88%，并且每个月都远多于组织用户。这说明中国开源开发者更喜欢独立开发，团队协作意识较薄弱。</div>
+   </div>
+
+   <div class="row rowMain">
+      <div class="col-md-8 repoMain"  id="worldUserMain"><p>2016年GitHub全球个人用户与组织用户热门项目变化图</p></div>
+      <div class="col-md-4 readme"  id="orgInfo">
+      <div id="worldPie" style="height: 300px"></div>
+      右图所示为世界热门项目的创建者中个人用户与组织用户的对比，总体来说，个人用户稍多于组织用户，个人用户为56%，组织用户为44%，但是差距不是很大，6月份组织用户甚至多于个人用户。这说明，全球范围内的开发者在独立开发的同时，注重团队协作，愿意组成小团体一起开发项目。</div>
+   </div>
+   <script src="/js/showJs/repoMonthShow.js"></script>
+</body>
+

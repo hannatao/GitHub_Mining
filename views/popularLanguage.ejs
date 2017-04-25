@@ -1,0 +1,111 @@
+<meta charset="utf-8">
+<head>
+  <title><%= title %></title>
+  <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+  <link href="/css/public.css" rel="stylesheet">
+  <script src="/js/lib/jquery-1.9.1.min.js"> </script>
+  <script src="/bootstrap/js/bootstrap.min.js"></script>
+  <script src="/js/lib/d3.v3.min.js"></script>
+  <script src="/js/lib/d3.min.js"></script>
+  <script src="/js/lib/d3pie.min.js"></script>
+<style type="text/css">
+.repoInfo span{
+  color: #FFFFFF;
+  font-size: 10px;
+}
+.repoInfo a{
+  color: #5CADAD;
+  font-size: 10px;
+}
+.repoInfo p{
+  color: #FFFFFF;
+  font-size: 12px;
+}
+</style>
+</head>
+
+<body style="background-image: url(/images/wood.jpg);background-size:cover">
+<nav class="navbar  navbar-inverse">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="/">首页</a>
+    </div>
+    <div class="nav navbar-nav">   
+      <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">用户 <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="/users/hot">热门用户</a></li>
+            <li><a href="/users/company">公司分布</a></li>
+            <li><a href="/users/location">地域分布</a></li>
+            <li><a href="/users/time">时间分布</a></li>
+            <li><a href="/users/follower">用户关系</a></li>
+          </ul>
+      </li>
+      <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">项目 <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="/repo/popular_repo">热门项目</a></li>
+            <li><a href="/repo/popular_language">热门语言</a></li>
+            <li><a href="/repo/popular_frame">热门框架</a></li>
+            <li><a href="/repo/repo_Word">项目高频词</a></li>
+            <li><a href="/repo/repo_Contributor">开源贡献者</a></li>
+          </ul>
+      </li>
+      <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">组织 <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="/repo/popular_org">热门组织</a></li>
+            <li><a href="/repo/repo_month">组织VS个人用户</a></li>
+          </ul>
+      </li>
+    </div>
+    <ul class="nav navbar-nav navbar-right">
+      <li><a href="#">联系我们</a></li>
+    </ul>
+  </nav>
+  
+<div class="container">
+   <div class="row" background="#90C">
+      <div class="col-md-2">
+        <ul class="nav nav-pills nav-stacked" id="repoType" class="secondNavi">
+            <li class="active" value="1"><a href="#"><span class=""></span>中国vs世界</a></li>
+            <li value="2"><a href="#"><span class=""></span>中国:个人用户VS组织</a></li>
+            <li value="3"><a href="#"><span class=""></span>世界：个人用户VS组织</a></li>
+        </ul>
+      </div>
+
+      <div class="col-md-10">
+
+        <div class="row header"> 
+          <div class="col-md-10"><p>编程语言对比</p></div>
+          <div class="col-md-2">
+            <span class="fa fa-question" title="语言分布说明"  
+              data-container="body" data-toggle="popover" data-placement="bottom" data-content="本语言分布，根据之前获得的世界用户创建的近一万个项目，中国用户创建的1400多个项目，通过项目中的语言属性统计得到。其中个人用户和组织用户的对比，是根据热门项目创建者用户类型的差异，对热门项目进行区分，以得到用户类型的对比。语言分布图中只显示了占比大于等于3%的语言，小于3%的语言都归并到others中显示。" id="readme"> 
+            </span>
+          </div>
+        </div>  
+
+      <div class="row" background="#90C" style="padding-top: 10px;">
+        <div class="col-md-4"  id="chinaMain" onmouseover="chinaOnclick()"></div>
+        <div class="col-md-2 repoInfo"  id="chinaRepo" style="padding-top: 30px"></div>
+        <div class="col-md-4"  id="worldMain" onmouseover="worldOnclick()"></div>
+        <div class="col-md-2 repoInfo"  id="worldRepo" style="padding-top: 30px"></div>
+      </div>
+
+      <div class="row" background="#90C" style="padding-top: 10px;">
+          <div class="col-md-6 readme" id="readme1">
+          <p>中国开发者最喜欢的开发语言是占38%的Java,其具有绝对优势。其次JavaScript、Object-C和Python也占据一定的份额。与世界范围内的开发者相比，中国开发者较少使用Ruby。综合来看，后端开发语言所占的比例更大，在60%以上，前端只有JavaScript较多，其余均较少。</p>
+          </div>
+          <div class="col-md-6 readme" id="readme2"><p>
+          世界范围内的开发者最喜欢使用的语言是JavaScript和Java,两者相差不大，与中国开发者偏爱Java有所不同。其次前五名中还有Python、Ruby、HTML。其中Ruby语言是中国开发者很少使用的，两者所占比例差距较大。综合来看，前后端语言所占的比例相差无几，较为均衡。</p>
+          </div>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+</body>
+<script src="/js/showJs/languageShow.js"></script>
+
+

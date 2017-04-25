@@ -1,0 +1,129 @@
+<meta charset="utf-8">
+<head>
+  <title><%= title %></title>
+  <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+  <link href="/css/public.css" rel="stylesheet">
+  <script src="/js/lib/jquery-1.9.1.min.js"> </script>
+  <script src="/bootstrap/js/bootstrap.min.js"></script>
+  <script src="/js/lib/d3.v3.min.js"></script>
+  <script src="/js/lib/d3.tip.v0.6.3.js"></script>
+
+    <style type="text/css">
+    .smallHeader{
+      font-size: 15px;
+      color: #FFFFFF;
+    }
+  </style>
+
+</head>
+
+<body style="background-image: url(/images/background.jpg);background-size:cover">
+<nav class="navbar  navbar-inverse">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="/">首页</a>
+    </div>
+    <div class="nav navbar-nav">   
+      <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">用户 <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="/users/hot">热门用户</a></li>
+            <li><a href="/users/company">公司分布</a></li>
+            <li><a href="/users/location">地域分布</a></li>
+            <li><a href="/users/time">时间分布</a></li>
+            <li><a href="/users/follower">用户关系</a></li>
+          </ul>
+      </li>
+      <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">项目 <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="/repo/popular_repo">热门项目</a></li>
+            <li><a href="/repo/popular_language">热门语言</a></li>
+            <li><a href="/repo/popular_frame">热门框架</a></li>
+            <li><a href="/repo/repo_Word">项目高频词</a></li>
+            <li><a href="/repo/repo_Contributor">开源贡献者</a></li>
+          </ul>
+      </li>
+      <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">组织 <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="/repo/popular_org">热门组织</a></li>
+            <li><a href="/repo/repo_month">组织VS个人用户</a></li>
+          </ul>
+      </li>
+    </div>
+    <ul class="nav navbar-nav navbar-right">
+      <li><a href="#">联系我们</a></li>
+    </ul>
+  </nav>
+<div class="container">
+
+   <div class="row" id="repoMainRow" style="padding-top: 10px">
+     <div class="col-md-2">
+      <ul class="nav nav-pills nav-stacked secondNavi" id="secondNavi">
+        <li class="active"><a href="#"><span class="glyphicon glyphicon-plus"></span>贡献次数</a></li>
+        <li><a href="#"><span class="glyphicon glyphicon-cloud"></span>贡献项目数</a></li>
+        <li><a href="#"><span class="glyphicon glyphicon-cloud"></span>贡献影响力</a></li>
+      </ul>
+        <input type="text" id="liType" style="display: none">
+        <input type="text" id="liShowType" style="display: none">
+      </div>
+      <div class="col-md-7">
+
+        <div class="row header">
+
+          <div class="col-md-10 "><p>2016年GitHub上热门开源贡献者</p>
+            <div class="modal fade " id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                      &times;
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel" style="color: #000000">
+                      该贡献者项目词云
+                    </h4>
+                  </div>
+                  <div class="modal-body" id="bubbleMain"></div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="col-md-2">
+            <span class="fa fa-question" title="开源贡献者说明"  
+            data-container="body" data-toggle="popover" data-placement="right" data-content="开源贡献者排名分了三种方式，按照贡献次数：即在1400多个中国热门项目中，对项目的所有贡献次数之和。按照贡献项目数，即在1400等多个中国热门项目中，参与的热门项目数。按照贡献影响力，即参与贡献的项目总得分。右侧的表格即为该贡献者参与的热门项目信息，以及擅长的编程语言信息。"
+            id="readme"> </span>
+          </div>
+
+        </div>
+
+        <div id="content-Main"></div>
+      </div>
+
+      <div class="col-md-3">
+
+        <div class="input-group searchDiv" >
+          <a href="#" class="input-group-addon tooltip-test" data-toggle="tooltip" title="请输入1-30内整数，可得到前该名次的项目数据">
+              <span style="color:#0066CC">项目数</span>
+          </a>      
+          <input type="text" class="form-control" id="topNum">
+          <span class="input-group-btn">
+              <button class="btn btn-default" id="searchBtn" type="button">查询</button>
+          </span>
+        </div>
+
+        <div class="orgInfo" id="orgInfo" style="height:280;padding-top:20px "></div>
+        <div id="orgLanguages"></div>
+      </div>
+   </div>
+</body>
+<script src="/js/showJs/contributorsShow.js"></script>
+<script src="/js/drawChart/drawBubble.js"></script>
+<script src="/js/drawChart/drawPie.js"></script>
+

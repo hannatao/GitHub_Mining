@@ -1,0 +1,124 @@
+<meta charset="utf-8">
+<head>
+  <title><%= title %></title>
+  <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/css/public.css" rel="stylesheet">
+  <script src="/js/lib/jquery-1.9.1.min.js"> </script>
+  <script src="/bootstrap/js/bootstrap.min.js"></script>
+  <script src="/js/lib/d3.v3.min.js"></script>
+  <script src="/js/lib/d3.tip.v0.6.3.js"></script>
+
+  <style type="text/css">
+    .smallHeader{
+      font-size: 15px;
+      color: #FFFFFF;
+    }
+    .radio{
+    color: #FFFFFF;
+    text-align:left;
+    font-size: 15px;
+    }
+  </style>
+  
+</head>
+
+<body style="background-image: url(/images/background.jpg);background-size:cover">
+<nav class="navbar  navbar-inverse">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="/">首页</a>
+    </div>
+    <div class="nav navbar-nav">   
+      <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">用户 <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="/users/hot">热门用户</a></li>
+            <li><a href="/users/company">公司分布</a></li>
+            <li><a href="/users/location">地域分布</a></li>
+            <li><a href="/users/time">时间分布</a></li>
+            <li><a href="/users/follower">用户关系</a></li>
+          </ul>
+      </li>
+      <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">项目 <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="/repo/popular_repo">热门项目</a></li>
+            <li><a href="/repo/popular_language">热门语言</a></li>
+            <li><a href="/repo/popular_frame">热门框架</a></li>
+            <li><a href="/repo/repo_Word">项目高频词</a></li>
+            <li><a href="/repo/repo_Contributor">开源贡献者</a></li>
+          </ul>
+      </li>
+      <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">组织 <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="/repo/popular_org">热门组织</a></li>
+            <li><a href="/repo/repo_month">组织VS个人用户</a></li>
+          </ul>
+      </li>
+    </div>
+    <ul class="nav navbar-nav navbar-right">
+      <li><a href="#">联系我们</a></li>
+    </ul>
+  </nav>
+  
+<div class="container">
+   <div class="row header" background="#90C"> 
+      <div class="col-md-8">
+         <p>2016年中国区GitHub上最热门的组织</p></div>
+
+        <div class="modal fade " id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                  &times;
+                </button>
+                <h4 class="modal-title" id="myModalLabel" style="color: #000000">
+                  该组织项目词云
+                </h4>
+              </div>
+              <div class="modal-body" id="bubbleMain"></div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                </button>
+              </div>
+            </div>
+          </div>
+        </div><!-- /.modal -->
+
+        <div class="col-md-2 radio">
+          <form>
+            <label><input type="radio" name="optionsRadios" value="reposScoreTotal" checked class="radioInput">项目影响力</label><br>
+            <label><input type="radio" name="optionsRadios" value="public_repos" class="radioInput">开源项目数</label>
+          </form>
+          <input type="text" id="liType" style="display: none">
+          <input type="text" id="liShowType" style="display: none">
+        </div>
+   </div>
+
+   <div class="row"  id="orgMainRow" style="padding-top: 10px">
+      <div class="col-md-8">
+        <div id="orgMain"></div>
+        <div class="readme" id="readme">          本排名是根据中国组织2016年创建的热门项目的综合评分总和得到的，右侧可以看到该组织拥有的
+          热门项目链接及其综合排名情况。本排名前十名分别是：腾讯，饿了吗，中国freeCodeCamp,阿里巴巴，中国laravel学院
+          iview,伯乐在线，exacity,expressif等。
+        </div>
+      </div>
+      <div class="col-md-3 repoMain">
+        <div class="input-group searchDiv" >
+          <a href="#" class="input-group-addon tooltip-test" data-toggle="tooltip" title="请输入1-30内整数，可得到前该名次的项目数据">
+              <span style="color:#0066CC">项目数</span>
+          </a>      
+          <input type="text" class="form-control" id="topNum">
+          <span class="input-group-btn">
+              <button class="btn btn-default" id="searchBtn" type="button">查询</button>
+          </span>
+        </div>
+        <div class="orgInfo" id="orgInfo" style="height:250;padding-top:20px "></div>
+        <div id="orgLanguages" style="padding-top:20px "></div>
+      </div>
+   </div>
+</body>
+<script src="/js/showJs/orgShow.js"></script>
+<script src="/js/drawChart/drawPie.js"></script>
+<script src="/js/drawChart/drawBubble.js"></script>

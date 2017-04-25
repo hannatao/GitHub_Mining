@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <script src="/js/lib/echarts.min.js"></script>
+    <script src="/js/lib/jquery.min.js"></script>
+    <script src="/js/lib/bootstrap.min.js"></script>
+    <script src="/js/chart/hot_chart.js"></script>
+    <script src="/js/chart/relation_chart.js"></script>
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+</head>
+<body style="background-image:url(/images/dark.jpg);background-size:cover">
+
+  <nav class="navbar  navbar-inverse">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="/">首页</a>
+    </div>
+    <div class="nav navbar-nav">   
+      <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">用户 <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="/users/hot">热门用户</a></li>
+            <li><a href="/users/company">公司分布</a></li>
+            <li><a href="/users/location">地域分布</a></li>
+            <li><a href="/users/time">时间分布</a></li>
+            <li><a href="/users/follower">用户关系</a></li>
+          </ul>
+      </li>
+      <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">项目 <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="/repo/popular_repo">热门项目</a></li>
+            <li><a href="/repo/popular_language">热门语言</a></li>
+            <li><a href="/repo/popular_frame">热门框架</a></li>
+            <li><a href="/repo/repo_Word">项目高频词</a></li>
+            <li><a href="/repo/repo_Contributor">开源贡献者</a></li>
+          </ul>
+      </li>
+      <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">组织 <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="/repo/popular_org">热门组织</a></li>
+            <li><a href="/repo/repo_month">组织VS个人用户</a></li>
+          </ul>
+      </li>
+    </div>
+    <ul class="nav navbar-nav navbar-right">
+      <li><a href="#">联系我们</a></li>
+    </ul>
+  </nav> 
+
+  <div class="container-fluid" >
+    <div class="row">
+      <div class="col-md-8" id="main" style="height:620px"></div>
+      <div class="col-md-3">
+        </br>
+        <p style="color:white;font-size:18px" id="title">用户详细信息：</p></br>
+        <p id="followers" style="color:white;font-size:15px"></p></br>
+        <p id="pr" style="color:white;font-size:15px"></p></br>
+        <p id="count" style="color:white;font-size:15px"></p></br>
+        <p id="repo" style="color:white;font-size:17px"></p></br>
+
+        <button class="btn btn-defalut" data-toggle="modal" data-target="#myModal" onclick="chart_on()"><i class="fa fa-circle-o-notch fa-spin"></i> More</button>
+        
+      </div>
+      <div class="col-md-1">
+        <span class="fa fa-question" title="Tips"  
+        data-container="body" data-toggle="popover" data-placement="bottom" data-content="该排名综合用户在2016年期间上榜的项目数，用户所拥有Followers数目以及用户所拥有公开资源池的数目这三项指标，采用层次分析法得出。点击左侧图表可进入用户的个人主页。"
+        id="readme"  style="color:white;text-align:right"> </span>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">TOP用户及其项目</h4>
+            </div>
+            <div class="modal-body" id="modal-body">
+              <div class="container-fluid" >
+                <div class="row">
+                  <div class="col-md-12" id="test" style="width:560px;height:500px">
+                    <script type="text/javascript">
+                    </script>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+  </div>
+
+  <script type="text/javascript">
+    $(function () { $("[data-toggle='popover']").popover();});
+          $("#readme").mouseover(function(){
+            $('#readme').popover('show');
+            });
+            $("#readme").mouseout(function(){
+              $('#readme').popover('hide');
+            });   
+    
+    var chart = echarts.init(document.getElementById('test'));
+    var graph = echarts.init(document.getElementById('main'));
+
+    var login = [];
+    var score = [];
+    var count = [];
+    var public_repos = [];
+    var follower = [];
+    var repo = [];
+    var json_temp = [];
+    // 异步加载数据
+    $.getJSON('/user_action/user_hot',function(json){
+
+      var temp_json = {};
+      json_temp = json.splice(0);
+      for(var key in json_temp){
+        login.push(json_temp[key].login);
+        score.push(json_temp[key].score);
+        count.push(json_temp[key].count);
+        public_repos.push(json_temp[key].public_repos);
+        follower.push(json_temp[key].followers);
+        repo.push(json_temp[key].repo);
+      }
+      temp_json['login'] = login;
+      temp_json['score'] = score;
+
+      graph.setOption(hot_chart(temp_json));
+      listen();
+    });
+
+    function chart_on(){
+      var index = graph.getOption().dataZoom[0].endValue + 1;
+      chart.setOption(relation(index,json_temp));
+    }
+  </script>
+</body>
+</html>

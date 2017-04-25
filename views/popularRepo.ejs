@@ -1,0 +1,192 @@
+<meta charset="utf-8">
+<head>
+  <title><%= title %></title>
+  <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+  <link href="/css/public.css" rel="stylesheet">
+  <script src="/js/lib/jquery-1.9.1.min.js"> </script>
+  <script src="/bootstrap/js/bootstrap.min.js"></script>
+  <script src="/js/lib/d3.v3.min.js"></script>
+  <script src="/js/lib/d3.tip.v0.6.3.js"></script>
+</head>
+
+<body style="background-image: url(/images/wood.jpg);background-size:cover">
+<nav class="navbar  navbar-inverse">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="/">首页</a>
+    </div>
+    <div class="nav navbar-nav">   
+      <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">用户 <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="/users/hot">热门用户</a></li>
+            <li><a href="/users/company">公司分布</a></li>
+            <li><a href="/users/location">地域分布</a></li>
+            <li><a href="/users/time">时间分布</a></li>
+            <li><a href="/users/follower">用户关系</a></li>
+          </ul>
+      </li>
+      <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">项目 <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="/repo/popular_repo">热门项目</a></li>
+            <li><a href="/repo/popular_language">热门语言</a></li>
+            <li><a href="/repo/popular_frame">热门框架</a></li>
+            <li><a href="/repo/repo_Word">项目高频词</a></li>
+            <li><a href="/repo/repo_Contributor">开源贡献者</a></li>
+          </ul>
+      </li>
+      <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">组织 <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="/repo/popular_org">热门组织</a></li>
+            <li><a href="/repo/repo_month">组织VS个人用户</a></li>
+          </ul>
+      </li>
+    </div>
+    <ul class="nav navbar-nav navbar-right">
+      <li><a href="#">联系我们</a></li>
+    </ul>
+  </nav>
+  
+<div class="container">
+  <div class="row">
+
+    <div class="col-md-2">
+      <ul class="nav nav-pills nav-stacked" id="repoType" class="secondNavi">
+          <li class="active"><a href="#"><span class="glyphicon glyphicon-star"></span>星数</a></li>
+          <li><a href="#"><span class="fa fa-code-fork"></span>分支数</a></li>
+          <li><a href="#"><span class="glyphicon glyphicon-plus"></span>贡献者数</a></li>
+          <li><a href="#"><span class="glyphicon glyphicon-cloud-upload"></span>pr数</a></li>
+          <li><a href="#"><span class="glyphicon glyphicon-thumbs-up"></span>综合评分</a></li>
+      </ul>
+      <input type="text" id="liType" style="display: none">
+      <input type="text" id="liShowType" style="display: none">
+    </div>
+
+    <div class="col-md-7">
+      <div class="row header">
+        <div class="col-md-11 "><p>2016年GitHub上中国的热门项目</p>
+
+          <div class="modal fade " id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                  </button>
+                  <div class="modal-title" id="myModalLabel" style="color: #000000"></div>
+                </div>
+                <div class="modal-body" id="classMain" style="background-image: url(/images/wood.jpg);background-size:cover"></div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="col-md-1">
+          <span class="fa fa-question" title="热门项目说明"  
+          data-container="body" data-toggle="popover" data-placement="right" data-content="首先，我们根据fork数目大于30和star数目大于30，筛选出世界范围内较热门的流行项目将近
+          一万条，根据其创建者的地址，筛选出中国用户创建的1400多个项目，对这些项目进行单个指
+          标的排序，同时采用层次分析法、商权法和灰色关联综合各个指标，得出项目的综合评分以及
+          排名。" id="readme"> </span>
+        </div>
+      </div>
+      <div class="row" id="repoMain"></div>
+      <div class="row secondHeader" id="pieHead">
+        <div class="col-md-6"><p>热门项目的创建者类型分布</p></div>
+        <div class="col-md-6"><p>热门项目的编程语言分布</p></div>
+      </div>
+      <div class="row" id="pie">
+        <div class="col-md-5" id="repoUser"></div>
+        <div class="col-md-2"></div>
+        <div class="col-md-5" id="repoLanguages"></div>
+      </div>
+    </div>
+
+    <div class="col-md-3">
+      <div>
+        <button class="btn btn-info" id="levelBtn" >整体分布</button>
+      </div>
+      <div class="input-group searchDiv" style="padding-top: 20px">
+        <a href="#" class="input-group-addon tooltip-test" data-toggle="tooltip" title="请输入1-30内整数，可得到前该名次的项目数据">
+            <span style="color:#0066CC">项目数</span>
+        </a>      
+        <input type="text" class="form-control" id="topNum">
+        <span class="input-group-btn">
+            <button class="btn btn-default" id="searchBtn" type="button">查询</button>
+        </span>
+      </div>
+
+      <div id="repoInfo" class="tableDiv">
+        <table class="table table-condensed" style="height: 400px">
+          <caption>项目详细信息</caption>
+            <tbody>
+            <tr>
+            <th><span class="glyphicon glyphicon-cloud"></span> 名称：</th>
+            <td id="repoName"></td>
+            </tr>
+            <tr>
+              <th>
+                <span class="glyphicon glyphicon-user"></span> 创建者
+              </th>
+              <td id="repoOwner"></td>
+            </tr>
+            <tr>
+              <th>
+                <span class="glyphicon glyphicon-list-alt"></span> 简介：  
+              </th>
+              <td id="repoDescrip"></td>
+             </tr>
+            <tr>
+              <th>
+                <span class="glyphicon glyphicon-edit"></span> 语言：  
+              </th>
+              <td id="repolanguage"></td>
+            </tr>
+            <tr>
+              <th><span class="glyphicon glyphicon-star"></span> 星数：</th>
+              <td id="repoStars"></td>
+             </tr>
+             <tr>
+              <th><span class="fa fa-code-fork"></span> 分支数：</th>
+              <td id="repoForks"></td>
+             </tr>
+             <tr>
+              <th><span class="glyphicon glyphicon-plus"></span> 贡献者数目：</th>
+              <td id="repoContributors"></td>
+             </tr>
+             <tr>
+              <th><span class="glyphicon glyphicon-user"></span> 最多贡献者：</th>
+              <td  id="repoMostCon"></td>
+             </tr>
+             <tr>
+             <th>
+               <a href="#" class="tooltip-test" data-toggle="tooltip" title="即该项目开源pull request的数目">
+                    <span class="glyphicon glyphicon-cloud-upload"></span> pr数目：
+               </a>
+              </th>
+              <td id="repoPrs"></td>
+             </tr>
+             <tr>
+              <th>
+                <a href="#" class="tooltip-test" data-toggle="tooltip" title="综合评分为星数目，分支数，订阅者数目等计算所得，满分为100，即为热门项目第一名">
+                  <span class="glyphicon glyphicon-thumbs-up"></span>综合评分：
+                </a>
+              </th>
+              <td id="myScore"></td>
+             </tr>
+             <tr></tr>
+            </tbody>
+        </table>
+      </div>
+
+    </div>
+   </div>
+</body>
+<script src="/js/showJs/repoShow.js"></script>
+<script src="/js/drawChart/drawPie.js"></script>

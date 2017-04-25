@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <script src="/js/lib/echarts.min.js"></script>
+    <script src="/js/lib/jquery.min.js"></script>
+    <script src="/js/lib/bootstrap.min.js"></script>
+    <script src="/js/chart/time_pie.js"></script>
+    <script src="/js/chart/time_chart.js"></script>
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+</head>
+<body style="background-image:url(/images/wood.jpg);background-size:cover">
+  <nav class="navbar  navbar-inverse">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="/">首页</a>
+    </div>
+    <div class="nav navbar-nav">   
+      <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">用户 <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="/users/hot">热门用户</a></li>
+            <li><a href="/users/company">公司分布</a></li>
+            <li><a href="/users/location">地域分布</a></li>
+            <li><a href="/users/time">时间分布</a></li>
+            <li><a href="/users/follower">用户关系</a></li>
+          </ul>
+      </li>
+      <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">项目 <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="/repo/popular_repo">热门项目</a></li>
+            <li><a href="/repo/popular_language">热门语言</a></li>
+            <li><a href="/repo/popular_frame">热门框架</a></li>
+            <li><a href="/repo/repo_Word">项目高频词</a></li>
+            <li><a href="/repo/repo_Contributor">开源贡献者</a></li>
+          </ul>
+      </li>
+      <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">组织 <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="/repo/popular_org">热门组织</a></li>
+            <li><a href="/repo/repo_month">组织VS个人用户</a></li>
+          </ul>
+      </li>
+    </div>
+    <ul class="nav navbar-nav navbar-right">
+      <li><a href="#">联系我们</a></li>
+    </ul>
+  </nav> 
+  <div class="container-fluid" >
+    <div class="row">
+      <div class="col-md-1 col-md-offset-11">
+        <span class="fa fa-question" title="Tips"  
+        data-container="body" data-toggle="popover" data-placement="bottom" data-content="由于GitHub仅提供3个月内的event记录，所以此项数据由前500用户在三个月内的pushevent发生时间统计得出，图示为北京时间。默认左侧为总计的分布情况。点击右侧可查看一周之内不同天的时间分布情况。"
+        id="readme"  style="color:white;text-align:right"> </span>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <h4 style="text-align:center;color:#fff">Github热门用户工作时间分布</h4>
+        <h5 style="text-align:center;color:#fff">基于PushEvent</h5> 
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-7" id="pie" style="height:560px"></div>
+      <div class="col-md-5" id="chart" style="height:560px"></div>
+    </div>
+  </div>
+    <script>
+    $(function () { $("[data-toggle='popover']").popover();});
+          $("#readme").mouseover(function(){
+            $('#readme').popover('show');
+            });
+            $("#readme").mouseout(function(){
+              $('#readme').popover('hide');
+            });
+    var pie = echarts.init(document.getElementById('pie'));
+    var chart = echarts.init(document.getElementById('chart'));
+
+    $.getJSON('/user_action/event',function(json){
+        chart.setOption(time_chart(json[0]));
+        pie.setOption(time_pie(json[1],'total'));
+        listen(json[2]);
+    });
+    </script>
+</body>
+</html>

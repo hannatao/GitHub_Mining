@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <script src="/js/lib/echarts.min.js"></script>
+    <script src="/js/lib/jquery.min.js"></script>
+    <script src="/js/lib/bootstrap.min.js"></script>
+    <script src="/js/lib/china.js"></script>
+    <script src="/js/chart/location_chart.js"></script>
+    <script src="/js/lib/wordcloud.js"></script>
+    <script src="/js/chart/word_cloud.js"></script>
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+</head>
+<body style="background-image:url(/images/black2.jpg);background-size:cover">
+  <nav class="navbar  navbar-inverse">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="/">首页</a>
+    </div>
+    <div class="nav navbar-nav">   
+      <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">用户 <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="/users/hot">热门用户</a></li>
+            <li><a href="/users/company">公司分布</a></li>
+            <li><a href="/users/location">地域分布</a></li>
+            <li><a href="/users/time">时间分布</a></li>
+            <li><a href="/users/follower">用户关系</a></li>
+          </ul>
+      </li>
+      <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">项目 <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="/repo/popular_repo">热门项目</a></li>
+            <li><a href="/repo/popular_language">热门语言</a></li>
+            <li><a href="/repo/popular_frame">热门框架</a></li>
+            <li><a href="/repo/repo_Word">项目高频词</a></li>
+            <li><a href="/repo/repo_Contributor">开源贡献者</a></li>
+          </ul>
+      </li>
+      <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">组织 <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="/repo/popular_org">热门组织</a></li>
+            <li><a href="/repo/repo_month">组织VS个人用户</a></li>
+          </ul>
+      </li>
+    </div>
+    <ul class="nav navbar-nav navbar-right">
+      <li><a href="#">联系我们</a></li>
+    </ul>
+  </nav>  
+  <div class="container-fluid" >
+    <div class="row">
+      <div class="col-md-1 col-md-offset-11">
+        <span class="fa fa-question" title="Tips"  
+        data-container="body" data-toggle="popover" data-placement="bottom" data-content="此处仅统计了在个人信息中填写了Location的用户。点击不同城市可以显示该城市用户的词云，该词云运用TF-IDF方法计算用户所填写的个人简历得出。"
+        id="readme"  style="color:white;text-align:right"> </span>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12" id="map" style="height:630px"></div>
+    </div>
+  </div>
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">用户BIO</h4>
+            </div>
+            <div class="modal-body" id="modal-body">
+              <div class="container-fluid" >
+                <div class="row">
+                <div class="col-md-12" id="test" style="width:560px;height:350px"></div>
+                </div>
+              </div>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+<script>
+    $(function () { $("[data-toggle='popover']").popover();});
+          $("#readme").mouseover(function(){
+            $('#readme').popover('show');
+            });
+            $("#readme").mouseout(function(){
+              $('#readme').popover('hide');
+            });
+    var chart = echarts.init(document.getElementById('map'));
+    var cloud = echarts.init(document.getElementById('test'));
+
+    $.getJSON('/user_action/location',function(json){
+        chart.setOption(location_chart(json));
+        chart.on('click',function(pamrams){
+          $.getJSON('/user_action/user_word',{name:English(pamrams.name)},function(data){
+            document.getElementById('myModalLabel').innerHTML = pamrams.name + '用户BIO';
+            cloud.setOption(word_cloud(data),{notMerge:true});
+            $('#myModal').modal('show');
+          });
+        });
+    });
+</script>
+</body>
+</html>

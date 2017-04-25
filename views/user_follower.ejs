@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <script src="/js/lib/echarts.min.js"></script>
+    <script src="/js/lib/jquery.min.js"></script>
+    <script src="/js/lib/bootstrap.min.js"></script>
+    <script src="/js/chart/user_follower.js"></script>
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+</head>
+<body style="background-image:url(/images/dark.jpg);background-size:cover">
+  <nav class="navbar  navbar-inverse">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="/">首页</a>
+    </div>
+    <div class="nav navbar-nav">   
+      <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">用户 <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="/users/hot">热门用户</a></li>
+            <li><a href="/users/company">公司分布</a></li>
+            <li><a href="/users/location">地域分布</a></li>
+            <li><a href="/users/time">时间分布</a></li>
+            <li><a href="/users/follower">用户关系</a></li>
+          </ul>
+      </li>
+      <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">项目 <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="/repo/popular_repo">热门项目</a></li>
+            <li><a href="/repo/popular_language">热门语言</a></li>
+            <li><a href="/repo/popular_frame">热门框架</a></li>
+            <li><a href="/repo/repo_Word">项目高频词</a></li>
+            <li><a href="/repo/repo_Contributor">开源贡献者</a></li>
+          </ul>
+      </li>
+      <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">组织 <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="/repo/popular_org">热门组织</a></li>
+            <li><a href="/repo/repo_month">组织VS个人用户</a></li>
+          </ul>
+      </li>
+    </div>
+    <ul class="nav navbar-nav navbar-right">
+      <li><a href="#">联系我们</a></li>
+    </ul>
+  </nav>    
+  <div class="container-fluid" >
+    <div class="row">
+      <div class="col-md-8" id="main" style="height:630px"></div>
+      <div class="col-md-4" id="main">
+        </br></br></br>
+        <p style="color:white;font-size:18px">&bull; 该和弦图展现了排名前30用户之间互相Follow的关系。圆圈越大，代表该用户的Followers越多。</p>
+        <p style="color:white;font-size:18px">
+        &bull; 将鼠标放置于单个圆上，可查看与该用户相关的用户。单击将爬取该用户的详细信息。</p>
+        </br>
+        <p style="color:white;font-size:18px" id="detail"></p>
+        <img alt class="img-circle" src="#" style="height:200px;width:200px;visibility:hidden" id="image"/>
+        </br></br>
+        <p style="color:white;font-size:16px" id="period"></p>
+        </br>
+        <p style="color:white;font-size:16px" id="hotRepo"></p>
+        </br>
+        <a href="https://help.github.com/articles/why-are-my-contributions-not-showing-up-on-my-profile/" id="help"></a>
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript">
+    var graph = echarts.init(document.getElementById('main'));
+
+    // 异步加载数据
+    $.getJSON('/user_action/user_follower',function(json){
+      graph.setOption(user_follower(json));
+      listen();
+    });
+  </script>
+</body>
+</html>

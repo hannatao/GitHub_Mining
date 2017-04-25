@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title><%= title %></title>
+  <meta charset="utf-8">
+  <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href='/css/bubble.css' rel='stylesheet' type='text/css'>
+  <link href="/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+  <link href="/css/public.css" rel="stylesheet">
+  <script src="/js/lib/jquery-1.9.1.min.js"> </script>
+  <script src="/bootstrap/js/bootstrap.min.js"></script>
+  <script src="/js/lib/bubble-d3.min.js"></script>
+  <script src="/js/lib/d3-transform.js"></script>
+  <script src="/js/lib/cafej/extarray.js"></script>
+  <script src="/js/lib/cafej/misc.js"></script>
+  <script src="/js/lib/cafej/micro-observer.js"></script>
+  <script src="/js/lib/microplugin.js"></script>
+  <script src="/js/lib/d3-transform.js"></script>
+  <script src="/js/lib/bubble-chart.js"></script>
+  <script src="/js/lib/central-click.js"></script>
+  <script src="/js/lib/lines.js"></script>
+  <style type="text/css">
+  .bubbleChart {
+    min-width: 100px;
+    max-width: 650px;
+    height: 650px;
+    margin: 0 auto;
+  }
+  </style>
+</head>
+
+<body style="background-image: url(/images/wood.jpg);background-size:cover">
+  <nav class="navbar  navbar-inverse">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="/">首页</a>
+    </div>
+    <div class="nav navbar-nav">   
+      <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">用户 <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="/users/hot">热门用户</a></li>
+            <li><a href="/users/company">公司分布</a></li>
+            <li><a href="/users/location">地域分布</a></li>
+            <li><a href="/users/time">时间分布</a></li>
+            <li><a href="/users/follower">用户关系</a></li>
+          </ul>
+      </li>
+      <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">项目 <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="/repo/popular_repo">热门项目</a></li>
+            <li><a href="/repo/popular_language">热门语言</a></li>
+            <li><a href="/repo/popular_frame">热门框架</a></li>
+            <li><a href="/repo/repo_Word">项目高频词</a></li>
+            <li><a href="/repo/repo_Contributor">开源贡献者</a></li>
+          </ul>
+      </li>
+      <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">组织 <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="/repo/popular_org">热门组织</a></li>
+            <li><a href="/repo/repo_month">组织VS个人用户</a></li>
+          </ul>
+      </li>
+    </div>
+    <ul class="nav navbar-nav navbar-right">
+      <li><a href="#">联系我们</a></li>
+    </ul>
+  </nav>
+<div class="container">
+  <div class="row header">
+    <div class="col-md-10 "><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2016年GitHub上中国热门项目词云</p></div>
+    <div class="col-md-2">
+      <span class="fa fa-question" title="词云说明"  
+      data-container="body" data-toggle="popover" data-placement="right" data-content="本词云根据获得的1400多个热门项目，查询项目中的简介，通过分词得到了高频词汇，选取前30名来展示。图中圆圈大小代表词频大小，圆圈上面为高频词和次数。右侧表格为高频词汇的详细信息，包含该高频词的热门项目，以及这些项目的语言分布。"
+      id="readme"> </span>
+    </div>
+  </div>
+
+   <div class="row" id="repoMainRow">
+      <div class="col-md-8 bubbleChart" id="content-Main"></div>
+      <div class="col-md-1"></div>
+      <div class="col-md-3" id="conInfo" style="padding-top: 50px">
+        <div class="header"></div>
+
+        <div style="height:380px">
+          <table class="table " id="conTable" style="height: 300px">
+            <caption>高频词相关信息</caption>
+              <tbody>
+              <tr>
+                <th>高频词:</th>
+                <td id="word"></td>
+              </tr>
+              <tr>
+                <th>次数:</th>
+                <td id="count"></td>
+              </tr>
+              <tr>
+                <th>相关热门项目:</th>
+                <td id="repos"></td>
+               </tr>
+              <tr>
+                <th></th>
+                <td></td>
+              </tr>
+              </tbody>
+          </table>
+        </div>
+        <div id= language></div>
+      </div>
+  </div>
+</div>
+</body>
+<script src="/js/showJs/repoWordShow.js"></script>
+<script src="/js/drawChart/drawPie.js"></script>
+</html>
+
